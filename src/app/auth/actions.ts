@@ -30,7 +30,7 @@ export async function register(formData: FormData) {
     return { error: error.message };
   }
 
-  redirect("/dashboard");
+  redirect("/register/confirm");
 }
 
 export async function logout() {
