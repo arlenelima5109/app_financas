@@ -34,7 +34,7 @@ export function TransactionList({ transactions }: TransactionListProps) {
 
   if (transactions.length === 0) {
     return (
-      <div className="text-center py-12 text-slate-400">
+      <div className="text-center py-12 text-muted-foreground">
         <TrendingUp className="h-12 w-12 mx-auto mb-3 opacity-30" />
         <p className="text-lg font-medium">Nenhuma transação encontrada</p>
         <p className="text-sm">Adicione sua primeira transação usando o botão acima</p>
@@ -44,18 +44,18 @@ export function TransactionList({ transactions }: TransactionListProps) {
 
   return (
     <>
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-border">
         {transactions.map((transaction) => (
           <div
             key={transaction.id}
-            className="flex items-center justify-between py-3 px-1 hover:bg-slate-50 rounded-lg transition-colors"
+            className="flex items-center justify-between py-3 px-1 hover:bg-muted/50 rounded-lg transition-colors"
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div
                 className={`p-2 rounded-full flex-shrink-0 ${
                   transaction.type === "income"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-500"
+                    ? "bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400"
+                    : "bg-red-100 dark:bg-red-900/40 text-red-500 dark:text-red-400"
                 }`}
               >
                 {transaction.type === "income" ? (
@@ -65,12 +65,12 @@ export function TransactionList({ transactions }: TransactionListProps) {
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-medium text-slate-800 truncate">{transaction.description}</p>
+                <p className="font-medium text-foreground truncate">{transaction.description}</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="secondary" className="text-xs">
                     {transaction.category}
                   </Badge>
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-muted-foreground">
                     {format(parseISO(transaction.date), "dd/MM/yyyy", { locale: ptBR })}
                   </span>
                 </div>
@@ -79,7 +79,9 @@ export function TransactionList({ transactions }: TransactionListProps) {
             <div className="flex items-center gap-2 ml-2 flex-shrink-0">
               <span
                 className={`font-semibold text-sm ${
-                  transaction.type === "income" ? "text-green-600" : "text-red-500"
+                  transaction.type === "income"
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-red-500 dark:text-red-400"
                 }`}
               >
                 {transaction.type === "income" ? "+" : "-"}
@@ -90,9 +92,7 @@ export function TransactionList({ transactions }: TransactionListProps) {
               </span>
               <DropdownMenu>
                 <DropdownMenuTrigger
-                  render={
-                    <Button variant="ghost" size="icon" className="h-8 w-8" />
-                  }
+                  render={<Button variant="ghost" size="icon" className="h-8 w-8" />}
                 >
                   <MoreHorizontal className="h-4 w-4" />
                 </DropdownMenuTrigger>

@@ -11,7 +11,7 @@ export function AddTransactionButton() {
 
   return (
     <>
-      <Button className="bg-blue-600 hover:bg-blue-700 gap-2" onClick={() => setOpen(true)}>
+      <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white gap-2" onClick={() => setOpen(true)}>
         <Plus className="h-4 w-4" />
         Nova transação
       </Button>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import { Transaction, CATEGORY_COLORS } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -22,6 +23,9 @@ function formatCurrency(value: number) {
 }
 
 export function ExpenseChart({ transactions }: ExpenseChartProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   const expenses = transactions.filter((t) => t.type === "expense");
 
   const byCategory = expenses.reduce<Record<string, number>>((acc, t) => {
@@ -37,15 +41,25 @@ export function ExpenseChart({ transactions }: ExpenseChartProps) {
     }))
     .sort((a, b) => b.value - a.value);
 
+  const tooltipStyle = {
+    backgroundColor: isDark ? "#1e293b" : "#ffffff",
+    border: "none",
+    borderRadius: "8px",
+    boxShadow: isDark
+      ? "0 4px 6px -1px rgb(0 0 0 / 0.4)"
+      : "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+    color: isDark ? "#f1f5f9" : "#0f172a",
+  };
+
   if (data.length === 0) {
     return (
-      <Card className="border-0 shadow-sm">
+      <Card className="border border-border shadow-sm">
         <CardHeader>
-          <CardTitle className="text-base font-semibold text-slate-700">
+          <CardTitle className="text-base font-semibold text-foreground">
             Despesas por Categoria
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center h-48 text-slate-400 text-sm">
+        <CardContent className="flex items-center justify-center h-48 text-muted-foreground text-sm">
           Nenhuma despesa no período
         </CardContent>
       </Card>
@@ -53,9 +67,9 @@ export function ExpenseChart({ transactions }: ExpenseChartProps) {
   }
 
   return (
-    <Card className="border-0 shadow-sm">
+    <Card className="border border-border shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base font-semibold text-slate-700">
+        <CardTitle className="text-base font-semibold text-foreground">
           Despesas por Categoria
         </CardTitle>
       </CardHeader>
@@ -73,15 +87,13 @@ export function ExpenseChart({ transactions }: ExpenseChartProps) {
             />
             <Tooltip
               formatter={(value) => formatCurrency(Number(value))}
-              contentStyle={{
-                borderRadius: "8px",
-                border: "none",
-                boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-              }}
+              contentStyle={tooltipStyle}
             />
             <Legend
               formatter={(value) => (
-                <span className="text-sm text-slate-600">{value}</span>
+                <span style={{ color: isDark ? "#94a3b8" : "#475569", fontSize: 13 }}>
+                  {value}
+                </span>
               )}
             />
           </PieChart>

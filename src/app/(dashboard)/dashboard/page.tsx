@@ -47,7 +47,6 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
   const { data: transactions = [] } = await query;
 
-  // Busca todas as transações do mês para os cards de resumo (sem filtro de tipo/categoria)
   const { data: allMonthTransactions = [] } = await supabase
     .from("transactions")
     .select("*")
@@ -55,14 +54,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     .lte("date", endDate);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navbar user={user} />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
-            <p className="text-slate-500 text-sm mt-1">Visão geral das suas finanças</p>
+            <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+            <p className="text-muted-foreground text-sm mt-1">Visão geral das suas finanças</p>
           </div>
           <AddTransactionButton />
         </div>
@@ -74,9 +73,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             <ExpenseChart transactions={allMonthTransactions as Transaction[]} />
           </div>
 
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border-0 p-6">
+          <div className="lg:col-span-2 bg-card rounded-xl shadow-sm p-6 border border-border">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <h2 className="text-base font-semibold text-slate-700">Transações</h2>
+              <h2 className="text-base font-semibold text-foreground">Transações</h2>
               <Suspense>
                 <Filters />
               </Suspense>

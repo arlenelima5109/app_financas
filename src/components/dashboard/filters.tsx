@@ -42,7 +42,7 @@ export function Filters() {
   return (
     <div className="flex flex-wrap gap-3">
       <Select value={month} onValueChange={(v) => v && updateFilter("month", v)}>
-        <SelectTrigger className="w-48 bg-white border-slate-200">
+        <SelectTrigger className="w-48">
           <SelectValue placeholder="Mês" />
         </SelectTrigger>
         <SelectContent>
@@ -55,7 +55,7 @@ export function Filters() {
       </Select>
 
       <Select value={type} onValueChange={(v) => v && updateFilter("type", v)}>
-        <SelectTrigger className="w-40 bg-white border-slate-200">
+        <SelectTrigger className="w-40">
           <SelectValue placeholder="Tipo" />
         </SelectTrigger>
         <SelectContent>
@@ -66,7 +66,7 @@ export function Filters() {
       </Select>
 
       <Select value={category} onValueChange={(v) => v && updateFilter("category", v)}>
-        <SelectTrigger className="w-48 bg-white border-slate-200">
+        <SelectTrigger className="w-48">
           <SelectValue placeholder="Categoria" />
         </SelectTrigger>
         <SelectContent>

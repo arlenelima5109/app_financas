@@ -73,10 +73,16 @@ export function TransactionForm({ transaction, onSuccess }: TransactionFormProps
         <Label>Tipo</Label>
         <Tabs value={type} onValueChange={handleTypeChange}>
           <TabsList className="w-full">
-            <TabsTrigger value="income" className="flex-1 data-[state=active]:bg-green-600 data-[state=active]:text-white">
+            <TabsTrigger
+              value="income"
+              className="flex-1 data-[state=active]:bg-green-600 data-[state=active]:text-white dark:data-[state=active]:bg-green-700"
+            >
               Receita
             </TabsTrigger>
-            <TabsTrigger value="expense" className="flex-1 data-[state=active]:bg-red-500 data-[state=active]:text-white">
+            <TabsTrigger
+              value="expense"
+              className="flex-1 data-[state=active]:bg-red-500 data-[state=active]:text-white dark:data-[state=active]:bg-red-700"
+            >
               Despesa
             </TabsTrigger>
           </TabsList>
@@ -138,9 +144,12 @@ export function TransactionForm({ transaction, onSuccess }: TransactionFormProps
 
       <Button
         type="submit"
-        className="w-full"
+        className={`w-full text-white ${
+          type === "income"
+            ? "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600"
+            : "bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600"
+        }`}
         disabled={loading}
-        style={{ backgroundColor: type === "income" ? "#16a34a" : "#ef4444" }}
       >
         {loading
           ? "Salvando..."
