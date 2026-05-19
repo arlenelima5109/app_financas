@@ -1,36 +1,126 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FinançasPessoais
 
-## Getting Started
+App web de gestão financeira pessoal — registre receitas e despesas, visualize seu saldo e acompanhe gastos por categoria.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router) + TypeScript
+- **Tailwind CSS** + shadcn/ui (base-ui)
+- **Supabase** — Auth, PostgreSQL e Row Level Security
+- **Recharts** — gráfico de despesas por categoria
+- **next-themes** — tema claro/escuro
+
+## Funcionalidades
+
+- Cadastro e login com confirmação de e-mail (Supabase Auth)
+- Registro de transações: receitas e despesas com data, valor, categoria e descrição
+- Dashboard com cards de resumo (receitas, despesas, saldo) e gráfico de pizza
+- Filtros por mês, tipo e categoria
+- Edição e exclusão de transações
+- Tema claro/escuro com persistência
+- Dados isolados por usuário via Row Level Security
+
+---
+
+## Rodando localmente
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/arlenelima5109/app_financas.git
+cd app_financas
+```
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Configure as variáveis de ambiente
+
+Copie o arquivo de exemplo e preencha com suas credenciais do Supabase:
+
+```bash
+cp .env.example .env.local
+```
+
+Edite `.env.local`:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anon
+```
+
+> As chaves estão em: **Supabase Dashboard → Project Settings → API**
+
+### 4. Configure o banco de dados
+
+No **SQL Editor** do seu projeto Supabase, execute o conteúdo do arquivo `supabase-schema.sql`:
+
+```sql
+-- cria a tabela transactions com Row Level Security
+```
+
+### 5. Inicie o servidor de desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploy na Vercel
 
-## Learn More
+### 1. Importe o repositório
 
-To learn more about Next.js, take a look at the following resources:
+Acesse [vercel.com/new](https://vercel.com/new), conecte sua conta GitHub e selecione o repositório `app_financas`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Configure as variáveis de ambiente
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Na etapa de configuração do projeto na Vercel, adicione as seguintes variáveis em **Environment Variables**:
 
-## Deploy on Vercel
+| Variável | Valor |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL do seu projeto Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave anon/pública do Supabase |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> **Nunca** commite o arquivo `.env.local` — ele está protegido pelo `.gitignore`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Deploy
+
+Clique em **Deploy**. A Vercel detecta automaticamente o Next.js e configura o build.
+
+A cada `git push` para a branch `main`, um novo deploy é feito automaticamente.
+
+### 4. Configure a URL de redirecionamento no Supabase
+
+Após o deploy, adicione a URL de produção da Vercel nas configurações de Auth do Supabase:
+
+**Supabase Dashboard → Authentication → URL Configuration**
+
+- **Site URL**: `https://seu-app.vercel.app`
+- **Redirect URLs**: `https://seu-app.vercel.app/**`
+
+---
+
+## Estrutura do projeto
+
+```
+src/
+├── app/
+│   ├── (auth)/           # Páginas de login, registro e confirmação
+│   ├── (dashboard)/      # Dashboard principal
+│   ├── auth/             # Server Actions de autenticação
+│   └── transactions/     # Server Actions de transações
+├── components/
+│   ├── dashboard/        # Cards, gráfico, filtros
+│   ├── layout/           # Navbar
+│   ├── transactions/     # Formulário e lista
+│   └── ui/               # Componentes shadcn/ui
+├── lib/supabase/         # Clientes Supabase (browser, server, proxy)
+└── types/                # Tipos TypeScript e categorias
+supabase-schema.sql       # Schema do banco + políticas RLS
+```
